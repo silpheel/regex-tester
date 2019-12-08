@@ -1,78 +1,167 @@
 @import "ui-variables";
 
 .regex-tester {
-  .body {
-    margin: 5px 0 0 0;
-    max-height: 700px;
-    overflow-y: scroll;
-  }
+	.body {
+		margin: 5px 0 0 0;
+		max-height: 50vh;
 
-  .bold {
-    font-weight: bold;
-  }
+		.scroll {
+			overflow-y: scroll;
+		}
+	}
 
-  .header {
-    border: 1px solid @tab-bar-background-color;
-    background-color: @tool-panel-background-color;
-    display: flex;
-    margin: 0 0 5px 0;
-  }
+	.header {
+		border: 1px solid @tab-bar-background-color;
+		background-color: @tool-panel-background-color;
+		display: flex;
+		margin: 0 0 5px 0;
+	}
 
-  .name {
-    cursor: default;
-    height: @component-icon-size;
-  }
+	.expression {
+		max-height: 10vh;
+	}
 
-  .output {
-    margin: 5px;
-    font-family: monospace;
-    white-space: pre-wrap;
-    background-color: @input-background-color;
+	.name {
+		cursor: default;
+		height: @component-icon-size;
+		font-weight: bold;
+	}
 
-    .match {
-      margin: 2px 1px 2px 1px;
-      padding: 2px;
-      background-color: @overlay-background-color;
+	.input-block {
+		margin: 5px;
+		white-space: pre-wrap;
+		max-height: 35vh;
+	}
 
-      .key {
-        font-weight: bold;
-      }
-    }
-  }
+	.output {
+		margin: 5px;
+		font-family: monospace;
+		white-space: pre-wrap;
+		background-color: @input-background-color;
+		max-height: 35vh;
 
-  .hidden {
-    display: none;
-  }
+		.editor-item {
+			margin-top: 5px;
+			max-height: 35vh;
+			line-height: normal;
+		}
 
-  .block {
-    margin: 5px 0 5px 0;
-  }
+		.match {
+			margin: 2px 1px 2px 1px;
+			padding: 2px;
+			background-color: @overlay-background-color;
 
-  .flex {
-    display: flex;
-    justify-content: space-between;
-  }
+			.key {
+				font-weight: bold;
+				color: white;
+			}
 
-  .flex-editor {
-    flex: 1;
-  }
+            .named-table, .positional-table {
+                border-collapse: : collapse;
+                border-style: hidden;
+            }
 
-  .editor-item {
-    padding: 0 5px 0 5px;
-  }
+            .named-table th, .positional-table th {
+                font-weight: bold;
+            }
 
-  .btn-group {
-    flex: none;
-    height: 2.5em;
-    display: flex;
-    padding: 0 5px 0 5px;
+            .named-table td, .positional-table td {
+                border: 1px solid white;
+            }
 
-    .btn {
-      flex: 1;
-    }
-  }
+            div.full_match {
+                background-color: black;
+                border-radius: 5px;
+                padding: 5px;
+			}
 
-  .error {
-    color: @text-color-error;
-  }
+            span.full_match {
+				font-style: italic;
+                background-color: #222;
+                border-radius: 5px;
+                padding: 0 5px;
+			}
+
+            div.match_value {
+                background-color: black;
+                border-radius: 5px;
+                padding: 5px;
+			}
+
+            span.match_value {
+				font-style: italic;
+                background-color: #222;
+                padding: 0 5px;
+			}
+
+			.match_sep {
+				color: darkgrey;
+			}
+		}
+
+		tr .match_value {
+			color: yellow;
+			font-weight: bold;
+			font-size: 16px;
+		}
+
+		tr:nth-of-type(4n) > td > div > span {
+			color: cyan;
+		}
+
+        tr:nth-of-type(4n+1) > td > div > span {
+			color: magenta;
+		}
+
+        tr:nth-of-type(4n+2) > td > div > span {
+			color: lightgreen;
+		}
+	}
+
+	.hidden {
+		display: none;
+	}
+
+	.block {
+		margin: 5px 0 5px 0;
+	}
+
+	.flex {
+		display: flex;
+		justify-content: space-between;
+	}
+
+	.flex-editor {
+		flex: 1;
+	}
+
+	.flex-left {
+		flex: 0 0 50%;
+	}
+
+	.flex-right {
+		flex: 1;
+	}
+
+	.btn-group {
+		flex: none;
+		height: 2.5em;
+		display: flex;
+		padding: 0 5px 0 5px;
+
+		.btn {
+			flex: 1;
+			font-weight: bold;
+		}
+	}
+
+	.error {
+		color: @text-color-error;
+		font-weight: bold;
+		font-size: 16px;
+	}
+
+	.warning {
+		color: @text-color-warning;
+	}
 }
