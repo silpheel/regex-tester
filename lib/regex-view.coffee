@@ -11,28 +11,28 @@ module.exports =
     @content: ->
       @div class:'regex-tester', =>
         @div class: 'header', =>
-          @div class: 'name bold', 'RegEx Tester'
+          @div class: 'name', 'RegEx Tester'
         @div class: 'body', =>
           @div class:'block flex', =>
-            @div class:'editor-item flex-editor', =>
-              @subview 'regex_data', new TextEditorView({placeholderText:'Regular Expression'})
+            @div class:'editor-item flex-editor expression', =>
+              @subview 'regex_data', new TextEditorView({placeholderText:'Regular Expression', softWrapped:false})
             @div =>
               @div id:'regex-type', class:'btn-group', =>
-                @button outlet:'regexp', class:'btn bold selected', 'RegExp'
-                @button outlet:'xregexp', class:'btn bold', 'XRegExp'
+                @button outlet:'regexp', class:'btn selected', 'RegExp'
+                @button outlet:'xregexp', class:'btn', 'XRegExp'
               @div id:'regex-config', =>
                 @div class:'btn-group', =>
                   @button outlet:'global', class:'btn icon icon-globe'
-                  @button outlet:'ignore_case', class:'btn bold', 'Aa'
+                  @button outlet:'ignore_case', class:'btn', 'Aa'
                   @button outlet:'multiline', class:'btn icon icon-three-bars'
                 @div class:'xregex-config hidden btn-group', =>
                   @button outlet:'explicit_capture', class:'btn icon icon-code'
-                  @button outlet:'free_space', class:'btn bold', '__'
-                  @button outlet:'dot_all', class:'btn bold', '.'
-          @div class:'block', =>
-            @div class:'editor-item', =>
-              @subview 'test_data', new TextEditorView({placeholderText:'Test Input'})
-          @div class:'output', outlet: 'output'
+                  @button outlet:'free_space', class:'btn', '__'
+                  @button outlet:'dot_all', class:'btn', '.'
+          @div class:'block flex', =>
+            @div class:'input-block editor-item flex-left scroll', =>
+              @subview 'test_data', new TextEditorView({placeholderText:'Test Input', softWrapped: false})
+            @div class:'output editor-item flex-right scroll', outlet: 'output'
 
     initialize: ->
       @RegexEditor = @regex_data.getModel()
@@ -100,27 +100,42 @@ module.exports =
     splitLines: (editor) ->
       editor.setText(editor.getText().replace(/\\n/g,'\n'))
 
-    createMatchItem: (match) ->
+    createMatchItem: (match, matchIndex) ->
       $$ ->
         @div class:'match', =>
-          @div class:'match_part', =>
-            @span class:'key', 'match: '
-            @span '"' + match.match + '"'
-          if match.named_groups?
-            for k in Object.keys(match.named_groups)
-              @div class:'match_part', =>
-                @span class:'key', '  ' + k + ': '
-                @span '"' + match.named_groups[k] + '"'
-          @div class:'match_part', =>
-            @span class:'key', 'groups: '
-            @span '"' + match.groups.toString() + '"'
+            @div class:'key', 'Match ' + (matchIndex + 1) + ": "
+            @div class:'full_match', =>
+                @span class:'full_match', match.match
+            @div class:'block flex', =>
+                if match.named_groups?
+                    @div class:'block flex-left', =>
+                        @table class:'named-table match', =>
+                            @tr =>
+                                @th 'Named', colspan: 2
+                            for k in Object.keys(match.named_groups)
+                                if (k!="groups")
+                                    @tr =>
+                                        @td class:'key', k
+                                        @td =>
+                                            @div class:'match_value', =>
+                                                @span class:'match_value', match.named_groups[k]
+                    @div class:'block flex-left', =>
+                        @table class:'positional-table match', =>
+                            @tr =>
+                                @th 'Positional', colspan: 2
+                            for k, i in match.groups
+                                @tr =>
+                                    @td class:'key', '#' + (i + 1)
+                                    @td =>
+                                        @div class:'match_value', =>
+                                            @span class:'match_value', k
+
 
     update: ->
       @clear()
 
       if (@RegexEditor.getText()=="")
-        return
-
+          return
       options =
         global: @global.hasClass('selected')
         multiline: @multiline.hasClass('selected')
@@ -135,10 +150,10 @@ module.exports =
           m = regex.getMatches @RegexEditor.getText(), @TestEditor.getText(), options
         if m?
           if m.length isnt 0
-            for match in m
-              @output.append @createMatchItem match
+            for match, matchIndex in m
+              @output.append @createMatchItem match, matchIndex
           else
-            @output.html "<span class='error'>RegExp failed!</span>"
+            @output.html "<span class='warning'>No matches found!</span>"
         else
           @output.html ''
       catch error
