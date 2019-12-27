@@ -42,7 +42,7 @@ describe 'XRegExp tests', ->
         explicit: false
       }
       expect(m.length).toBe 4
-      expect(m).toEqual [
+      expect(m).toEqual [  ## wrong test data? extra `groups : undefined` in all results
         {
           match: 'a'
           named_groups: { groups: undefined }
@@ -76,7 +76,7 @@ describe 'XRegExp tests', ->
         explicit: false
       }
       expect(m.length).toBe 2
-      expect(m).toEqual [
+      expect(m).toEqual [  ## wrong test data? extra `groups : undefined` in all results
         {
           match: 'abba'
           named_groups: { groups: undefined }
@@ -100,7 +100,7 @@ describe 'XRegExp tests', ->
         explicit: true
       }
       expect(m.length).toBe 1
-      expect(m).toEqual [
+      expect(m).toEqual [  ## wrong test data? extra `groups : undefined` in all results
         {
           match: 'aabc'
           named_groups: {
@@ -122,7 +122,7 @@ describe 'XRegExp tests', ->
         explicit: false
       }
       expect(m.length).toBe 1
-      expect(m).toEqual [
+      expect(m).toEqual [  ## wrong test data? extra `groups : undefined` in all results
         {
           match: 'aa\nbb'
           named_groups: { groups: undefined }
@@ -141,7 +141,7 @@ describe 'XRegExp tests', ->
         explicit: false
       }
       expect(m.length).toBe 1
-      expect(m).toEqual [
+      expect(m).toEqual [  ## wrong test data? extra `groups : undefined` in all results
         {
           match: 'xregex-spec.coffee:134'
           named_groups: {

@@ -11,6 +11,14 @@
         {
           'label': 'Hide'
           'command': 'regex-tester:hide'
+        },
+        {
+          'label': 'Show Results'
+          'command': 'regex-tester:showresults'
+        },
+        {
+          'label': 'Hide Results'
+          'command': 'regex-tester:hideresults'
         }
       ]
     ]

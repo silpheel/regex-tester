@@ -7,11 +7,14 @@ module.exports =
   class RegexView extends View
     RegexEditor: null
     TestEditor: null
+    @resultview: null
 
     @content: ->
       @div class:'regex-tester', =>
         @div class: 'header', =>
-          @div class: 'name', 'RegEx Tester'
+          @div class: 'name', =>
+            @span 'RegEx Tester'
+          @button id:'regex-tester-close', class:'btn icon icon-x'
         @div class: 'body', =>
           @div class:'block flex', =>
             @div class:'editor-item flex-editor expression', =>
@@ -32,16 +35,29 @@ module.exports =
           @div class:'block flex', =>
             @div class:'input-block editor-item flex-left scroll', =>
               @subview 'test_data', new TextEditorView({placeholderText:'Test Input', softWrapped: false})
-            @div class:'output editor-item flex-right scroll', outlet: 'output'
+
+    helpblock: ->
+      @span "omg"
+
+    setResultPanel: (target) ->
+      @results = target
 
     initialize: ->
       @RegexEditor = @regex_data.getModel()
       @TestEditor = @test_data.getModel()
 
+      @ResultView ?= require './regex-results'
+      @resultview ?= new @ResultView
+
+
       @RegexEditor.setText ''
       @TestEditor.setText ''
       @find('.btn').removeClass 'selected'
       @regexp.addClass 'selected'
+
+      @on 'click', '#regex-tester-close', (e) =>
+        item = e.currentTarget
+        @hide()
 
       @on 'click', '#regex-config .btn', (e) =>
         item = e.currentTarget
@@ -51,6 +67,17 @@ module.exports =
           item.classList.add 'selected'
         @update()
         @test_data.focus()
+
+      @on 'click', '#help .btn', (e) =>
+        item = e.currentTarget
+        if item.classList.contains 'selected'
+          item.classList.remove 'selected'
+        else
+          item.classList.add 'selected'
+        if @showtest.hasClass 'selected'
+          @find('#helptest').removeClass('hidden')
+        else
+          @find('#helptest').addClass('hidden')
 
       @on 'click', '#regex-type .btn', (e) =>
         item = e.currentTarget
@@ -80,19 +107,29 @@ module.exports =
 
     destroy: ->
       @disposables.dispose()
+      @resultview?.destroy
+
       @panel?.destroy()
       @panel = null
 
     hide: ->
       @panel?.hide()
+      @resultview?.hide()
 
     show: ->
       @panel ?= atom.workspace.addBottomPanel(item: this)
       @panel.show()
       @regex_data.focus()
+      @resultview.show()
+
+    showresults: ->
+      @resultview.show()
+
+    hideresults: ->
+      @resultview.hide()
 
     clear: ->
-      @output.html('')
+      @resultview.output.html('')
 
     joinLines: (editor) ->
       editor.setText(editor.getText().replace(/\n/g,'\\n'))
@@ -151,10 +188,10 @@ module.exports =
         if m?
           if m.length isnt 0
             for match, matchIndex in m
-              @output.append @createMatchItem match, matchIndex
+              @regexview.output.append @createMatchItem match, matchIndex
           else
-            @output.html "<span class='warning'>No matches found!</span>"
+            @regexview.output.html "<span class='warning'>No matches found!</span>"
         else
-          @output.html ''
+          @regexview.output.html ''
       catch error
-        @output.html "<span class='error'>#{error.message}</span>"
+        @regexview.output.html "<span class='error'>#{error.message}</span>"

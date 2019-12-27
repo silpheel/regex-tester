@@ -8,12 +8,18 @@
     "tester"
   ],
   "activationCommands": [
-    {
-      "atom-workspace": "regex-tester:show"
+      {
+        "atom-workspace": "regex-tester:show"
+      },
+      {
+        "atom-workspace": "regex-tester:hide"
     },
-    {
-      "atom-workspace": "regex-tester:hide"
-    }
+      {
+        "atom-workspace": "regex-tester:showresults"
+      },
+      {
+        "atom-workspace": "regex-tester:hideresults"
+      }
   ],
   "repository": "https://github.com/deprint/regex-tester",
   "license": "MIT",

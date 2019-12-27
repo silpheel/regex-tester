@@ -1,7 +1,11 @@
 '.platform-darwin':
   'cmd-r cmd-t': 'regex-tester:show'
   'cmd-r cmd-h': 'regex-tester:hide'
+  'cmd-t cmd-t': 'regex-tester:showresults'
+  'cmd-t cmd-h': 'regex-tester:hideresults'
 
 '.platform-linux, .platform-win32':
   'ctrl-r ctrl-t': 'regex-tester:show'
   'ctrl-r ctrl-h': 'regex-tester:hide'
+  'ctrl-t ctrl-t': 'regex-tester:show'
+  'ctrl-t ctrl-h': 'regex-tester:hide'
